@@ -436,12 +436,12 @@
 
   <div class="right-panel">
     <div class="card">
-      <div class="overview-title">🌿 insights</div>
+      <div class="overview-title"> Summary </div>
       <div class="stats-grid" id="statsContainer"></div>
     </div>
 
     <div class="card">
-      <div class="overview-title">📅 monthly view</div>
+      <div class="overview-title"> Monthly View </div>
       <div class="calendar-grid" id="calendarGrid"></div>
     </div>
   </div>
@@ -452,7 +452,7 @@
   const sections = {
     Morning: ['Morning Prayer', 'Daily Text', 'Bible Reading', 'Shower', 'Vitamins'],
     Midday: ['Exercise', 'Protein', 'Fruits & Nuts', 'Fiber'],
-    Night: ['Skincare', 'Floss & Brush', 'Evening Prayer', 'STAR']
+    Night: ['Skincare', 'Floss & Brush', 'Evening Prayer', '⭐']
   };
 
   const nonDailyHabits = ['Meeting Preparation', 'Meeting Participation', 'Personal Study'];
@@ -463,7 +463,7 @@
 
   // life areas (only for donut summaries)
   const lifeAreas = {
-    spiritual: ['Morning Prayer', 'Evening Prayer', 'STAR', 'Daily Text', 'Bible Reading', 'Meeting Preparation', 'Meeting Participation', 'Personal Study'],
+    spiritual: ['Morning Prayer', 'Evening Prayer', '⭐', 'Daily Text', 'Bible Reading', 'Meeting Preparation', 'Meeting Participation', 'Personal Study'],
     physical: ['Fruits & Nuts', 'Fiber', 'Exercise', 'Protein'],
     hygiene: ['Shower', 'Vitamins', 'Skincare', 'Floss & Brush']
   };
@@ -709,19 +709,19 @@
     const statsContainer = document.getElementById('statsContainer');
     statsContainer.innerHTML = `
       <div class="stat-card">
-        <h3>🏆 Most consistent (month)</h3>
+        <h3>🏆 Most consistent </h3>
         <div class="habit-list">
           ${mostCompleted.length ? mostCompleted.map(h => `<div class="habit-item"><span class="habit-name">${h}</span></div>`).join('') : '<div class="badge-empty">✨ keep building</div>'}
         </div>
       </div>
       <div class="stat-card">
-        <h3>🌱 Most neglected (month)</h3>
+        <h3>😔 Most neglected </h3>
         <div class="habit-list">
           ${mostNeglected.filter(h => h).length ? mostNeglected.map(h => `<div class="habit-item"><span class="habit-name">${h}</span></div>`).join('') : '<div class="badge-empty">🌟 amazing consistency!</div>'}
         </div>
       </div>
       <div class="stat-card">
-        <h3>🌸 Life areas · monthly donut</h3>
+        <h3> Overall Health </h3>
         <div class="donuts-life">
           ${Object.entries(lifePercentages).map(([area, pct]) => `
             <div class="donut-life-card">
@@ -774,11 +774,8 @@
           ${renderMiniDonut(middayPct, '☀️')}
           ${renderMiniDonut(nightPct, '🌙')}
         </div>
-        <div class="section-badge">
-          <div>🌅</div><div>☀️</div><div>🌙</div>
-        </div>
         <div class="expand-detail" id="detail-${key}"></div>
-        <div class="click-hint">👆 tap details</div>
+        <div class="click-hint"> Details </div>
       `;
       cell.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -807,7 +804,7 @@
       <div style="font-weight:bold;">✅ Done (${completedList.length})</div>
       <div>${completedList.length ? completedList.map(h => `<span class="habit-tag">✓ ${h}</span>`).join('') : '—'}</div>
       <div style="font-weight:bold; margin-top:6px;">⏳ Left</div>
-      <div>${pendingList.length ? pendingList.map(h => `<span class="habit-tag">○ ${h}</span>`).join('') : '🎉 all done!'}</div>
+      <div>${pendingList.length ? pendingList.map(h => `<span class="habit-tag">○ ${h}</span>`).join('') : '🎉 All Done!'}</div>
     `;
   }
 
