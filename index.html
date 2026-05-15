@@ -144,7 +144,7 @@
     }
 
     .tree-area {
-      height: 90px;
+      height: 100px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -152,9 +152,12 @@
       background: #fafbe9;
     }
 
-    .tree {
-      font-size: 3rem;
-      transition: transform 0.2s;
+    .tree-img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      display: inline-block;
+      transition: transform 0.2s ease;
     }
 
     .tasks {
@@ -197,8 +200,8 @@
     }
 
     .stats-grid {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
 
@@ -357,51 +360,98 @@
       color: var(--accent);
     }
 
-    .section-badge {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
-      font-size: 0.6rem;
-      gap: 4px;
-    }
-
-    .section-badge div {
-      background: #eef3e4;
-      border-radius: 20px;
-      padding: 3px 0;
-      text-align: center;
-      flex: 1;
-    }
-
     .expand-detail {
       display: none;
       margin-top: 10px;
       background: #edf5e2;
       border-radius: 18px;
-      padding: 8px;
+      padding: 8px 10px;
       font-size: 0.7rem;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .calendar-cell.active-detail .expand-detail {
       display: flex;
-      flex-direction: column;
     }
 
-    .habit-tag {
-      background: white;
-      padding: 3px 8px;
-      border-radius: 30px;
-      margin: 2px;
-      display: inline-block;
-      font-size: 0.7rem;
+    /* DISCREET EDIT STYLES — minimal, subtle */
+    .detail-group {
+      background: rgba(255, 255, 245, 0.6);
+      border-radius: 14px;
+      padding: 6px 8px;
+      transition: all 0.1s ease;
     }
-
+    
+    .detail-group strong {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: #7c6b4a;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+    
+    .detail-tasks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    
+    /* discreet habit tag with tiny checkbox */
+    .habit-tag-discreet {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #ffffffcc;
+      padding: 2px 8px 2px 5px;
+      border-radius: 24px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: #4a5b2e;
+      border: 0.5px solid #cddfb0;
+      transition: all 0.1s;
+      cursor: pointer;
+      backdrop-filter: blur(2px);
+    }
+    
+    .habit-tag-discreet:hover {
+      background: #fffcf0;
+      border-color: #b38eff;
+    }
+    
+    /* tiny checkbox */
+    .habit-tag-discreet input {
+      width: 12px;
+      height: 12px;
+      margin: 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.1s;
+    }
+    
+    .habit-tag-discreet input:hover {
+      opacity: 1;
+    }
+    
+    .habit-tag-discreet span {
+      line-height: 1.2;
+    }
+    
     .click-hint {
       text-align: center;
-      font-size: 0.55rem;
-      opacity: 0.55;
-      margin-top: 8px;
+      font-size: 0.52rem;
+      opacity: 0.4;
+      margin-top: 6px;
+      letter-spacing: 0.2px;
+    }
+    
+    /* no extra outline or focus distractions */
+    .expand-detail input:focus {
+      outline: none;
     }
 
     @media (max-width: 1000px) {
@@ -413,6 +463,14 @@
       }
       .calendar-grid {
         grid-template-columns: repeat(5, 1fr);
+      }
+      .habit-tag-discreet {
+        font-size: 0.62rem;
+        padding: 2px 6px 2px 4px;
+      }
+      .habit-tag-discreet input {
+        width: 11px;
+        height: 11px;
       }
     }
   </style>
@@ -455,31 +513,25 @@
     Night: ['Skincare', 'Floss & Brush', 'Evening Prayer', '⭐']
   };
 
-  const nonDailyHabits = ['Meeting Preparation', 'Meeting Participation', 'Personal Study'];
-  function isNonDailyRequiredToday(date) {
-    const dow = date.getDay();
-    return (dow === 1 || dow === 0); // Monday or Sunday
-  }
-
-  // life areas (only for donut summaries)
   const lifeAreas = {
-    spiritual: ['Morning Prayer', 'Evening Prayer', '⭐', 'Daily Text', 'Bible Reading', 'Meeting Preparation', 'Meeting Participation', 'Personal Study'],
+    spiritual: ['Morning Prayer', 'Evening Prayer', '⭐', 'Daily Text', 'Bible Reading'],
     physical: ['Fruits & Nuts', 'Fiber', 'Exercise', 'Protein'],
     hygiene: ['Shower', 'Vitamins', 'Skincare', 'Floss & Brush']
   };
 
-  const treeStages = ['🌱', '🌿', '🪴', '🌳'];
+  const treeStagesMorning = ['Tree/P1.png', 'Tree/P2.png', 'Tree/P3.png', 'Tree/P4.png', 'Tree/P5.png', 'Tree/P6.png'];
+  const treeStagesMidday = ['Tree/Y1.png', 'Tree/Y3.png', 'Tree/Y4.png', 'Tree/Y5.png', 'Tree/Y6.png'];
+  const treeStagesNight = ['Tree/B1.png', 'Tree/B3.png', 'Tree/B4.png', 'Tree/B5.png', 'Tree/B6.png'];
+  
   const today = new Date();
   
-  // ----- current displayed month (for monthly stats & calendar) -----
   let currentDisplayYear = today.getFullYear();
-  let currentDisplayMonth = today.getMonth(); // 0-indexed
+  let currentDisplayMonth = today.getMonth();
 
   function getDateKey(date) {
     return date.toISOString().split('T')[0];
   }
 
-  // ----- STORAGE -----
   function loadData() {
     const stored = localStorage.getItem('habitTrackerTimeline');
     return stored ? JSON.parse(stored) : {};
@@ -489,33 +541,21 @@
     localStorage.setItem('habitTrackerTimeline', JSON.stringify(data));
   }
 
-  // ensure full structure for any day (used on init and on the fly)
   function ensureDayStructure(data, dateKey) {
     const dateObj = new Date(dateKey);
     if (isNaN(dateObj)) return data;
     if (!data[dateKey]) data[dateKey] = {};
-    // daily sections
     Object.keys(sections).forEach(section => {
       if (!data[dateKey][section]) data[dateKey][section] = {};
       sections[section].forEach(task => {
         if (data[dateKey][section][task] === undefined) data[dateKey][section][task] = false;
       });
     });
-    // non-daily for days where it's required (or already exists)
-    const required = isNonDailyRequiredToday(dateObj);
-    if (required || data[dateKey]?.NonDaily) {
-      if (!data[dateKey].NonDaily) data[dateKey].NonDaily = {};
-      nonDailyHabits.forEach(habit => {
-        if (data[dateKey].NonDaily[habit] === undefined) data[dateKey].NonDaily[habit] = false;
-      });
-    }
     return data;
   }
 
   function ensureAllExisting(data) {
-    // ensure for today
     data = ensureDayStructure(data, getDateKey(today));
-    // also ensure for any other date that appears in storage keys
     Object.keys(data).forEach(key => {
       data = ensureDayStructure(data, key);
     });
@@ -523,7 +563,6 @@
     return data;
   }
 
-  // get all tasks for a given day
   function getAllTasksForDay(data, dateKey) {
     const tasks = [];
     const dayData = data[dateKey] || {};
@@ -533,18 +572,20 @@
         tasks.push({ name: task, completed: secData[task] || false, category: section });
       });
     });
-    const dateObj = new Date(dateKey);
-    const required = isNonDailyRequiredToday(dateObj);
-    const nonDailySec = dayData.NonDaily || {};
-    if (required || Object.keys(nonDailySec).length > 0) {
-      nonDailyHabits.forEach(habit => {
-        tasks.push({ name: habit, completed: nonDailySec[habit] || false, category: 'NonDaily' });
-      });
-    }
     return tasks;
   }
 
-  // ---------- RENDER TODAY'S LEFT PANEL (daily habits) ----------
+  function setTaskCompletionForDate(dateKey, sectionName, taskName, completed) {
+    const data = loadData();
+    if (!data[dateKey]) data[dateKey] = {};
+    if (!data[dateKey][sectionName]) data[dateKey][sectionName] = {};
+    data[dateKey][sectionName][taskName] = completed;
+    saveData(data);
+    renderDailySections();
+    updateDisplayedMonth();
+    updateTodayProgress();
+  }
+
   function renderDailySections() {
     const container = document.getElementById('sectionsContainer');
     container.innerHTML = '';
@@ -552,59 +593,86 @@
     const todayKey = getDateKey(today);
     const todayData = data[todayKey] || {};
 
-    Object.entries(sections).forEach(([sectionName, tasks]) => {
-      const secObj = todayData[sectionName] || {};
-      let completed = 0;
-      tasks.forEach(t => { if (secObj[t]) completed++; });
-      const ratio = tasks.length ? completed / tasks.length : 0;
-      let stage = ratio >= 1 ? 3 : ratio >= 0.66 ? 2 : ratio >= 0.33 ? 1 : 0;
+    const morningSecObj = todayData.Morning || {};
+    let morningCompleted = 0;
+    sections.Morning.forEach(t => { if (morningSecObj[t]) morningCompleted++; });
+    const morningRatio = sections.Morning.length ? morningCompleted / sections.Morning.length : 0;
+    let morningStage = Math.min(Math.floor(morningRatio * treeStagesMorning.length), treeStagesMorning.length - 1);
+    if (morningStage < 0) morningStage = 0;
+    
+    const morningDiv = document.createElement('div');
+    morningDiv.className = 'section';
+    morningDiv.innerHTML = `
+      <div class="section-header"> Morning</div>
+      <div class="tree-area">
+        <div style="transform: scale(${0.9 + morningRatio * 0.2}); display: inline-block;">
+          <img src="${treeStagesMorning[morningStage]}" class="tree-img" alt="morning tree">
+        </div>
+      </div>
+      <div class="tasks">
+        ${sections.Morning.map(task => `
+          <label class="task">
+            <span>${task}</span>
+            <input type="checkbox" data-section="Morning" data-task="${task}" ${morningSecObj[task] ? 'checked' : ''}>
+          </label>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(morningDiv);
 
-      const sectionDiv = document.createElement('div');
-      sectionDiv.className = 'section';
-      sectionDiv.innerHTML = `
-        <div class="section-header">${sectionName}</div>
-        <div class="tree-area">
-          <div class="tree" style="transform: scale(${0.9 + ratio * 0.2})">${treeStages[stage]}</div>
+    const middaySecObj = todayData.Midday || {};
+    let middayCompleted = 0;
+    sections.Midday.forEach(t => { if (middaySecObj[t]) middayCompleted++; });
+    const middayRatio = sections.Midday.length ? middayCompleted / sections.Midday.length : 0;
+    let middayStage = Math.min(Math.floor(middayRatio * treeStagesMidday.length), treeStagesMidday.length - 1);
+    if (middayStage < 0) middayStage = 0;
+    
+    const middayDiv = document.createElement('div');
+    middayDiv.className = 'section';
+    middayDiv.innerHTML = `
+      <div class="section-header"> Midday</div>
+      <div class="tree-area">
+        <div style="transform: scale(${0.9 + middayRatio * 0.2}); display: inline-block;">
+          <img src="${treeStagesMidday[middayStage]}" class="tree-img" alt="midday tree">
         </div>
-        <div class="tasks">
-          ${tasks.map(task => `
-            <label class="task">
-              <span>${task}</span>
-              <input type="checkbox" data-section="${sectionName}" data-task="${task}" ${secObj[task] ? 'checked' : ''}>
-            </label>
-          `).join('')}
-        </div>
-      `;
-      container.appendChild(sectionDiv);
-    });
+      </div>
+      <div class="tasks">
+        ${sections.Midday.map(task => `
+          <label class="task">
+            <span>${task}</span>
+            <input type="checkbox" data-section="Midday" data-task="${task}" ${middaySecObj[task] ? 'checked' : ''}>
+          </label>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(middayDiv);
 
-    // Non-daily section
-    const showNonDaily = isNonDailyRequiredToday(today);
-    const nonDailyData = todayData.NonDaily || {};
-    if (showNonDaily || Object.keys(nonDailyData).length > 0) {
-      const nonDiv = document.createElement('div');
-      nonDiv.className = 'section';
-      let completedNon = 0;
-      nonDailyHabits.forEach(h => { if (nonDailyData[h]) completedNon++; });
-      const ratioNon = nonDailyHabits.length ? completedNon / nonDailyHabits.length : 0;
-      let stageNon = ratioNon >= 1 ? 3 : ratioNon >= 0.66 ? 2 : ratioNon >= 0.33 ? 1 : 0;
-      nonDiv.innerHTML = `
-        <div class="section-header">✨ Weekly (Mon & Sun)</div>
-        <div class="tree-area">
-          <div class="tree" style="transform: scale(${0.9 + ratioNon * 0.2})">${treeStages[stageNon]}</div>
+    const nightSecObj = todayData.Night || {};
+    let nightCompleted = 0;
+    sections.Night.forEach(t => { if (nightSecObj[t]) nightCompleted++; });
+    const nightRatio = sections.Night.length ? nightCompleted / sections.Night.length : 0;
+    let nightStage = Math.min(Math.floor(nightRatio * treeStagesNight.length), treeStagesNight.length - 1);
+    if (nightStage < 0) nightStage = 0;
+    
+    const nightDiv = document.createElement('div');
+    nightDiv.className = 'section';
+    nightDiv.innerHTML = `
+      <div class="section-header"> Night</div>
+      <div class="tree-area">
+        <div style="transform: scale(${0.9 + nightRatio * 0.2}); display: inline-block;">
+          <img src="${treeStagesNight[nightStage]}" class="tree-img" alt="night tree">
         </div>
-        <div class="tasks">
-          ${nonDailyHabits.map(habit => `
-            <label class="task">
-              <span>${habit} ${!isNonDailyRequiredToday(today) ? '(not required today)' : ''}</span>
-              <input type="checkbox" data-section="NonDaily" data-task="${habit}" ${nonDailyData[habit] ? 'checked' : ''} ${!isNonDailyRequiredToday(today) ? 'disabled style="opacity:0.5;"' : ''}>
-            </label>
-          `).join('')}
-          ${!isNonDailyRequiredToday(today) ? '<div style="font-size:0.7rem;text-align:center;">⏳ appears on Monday & Sunday</div>' : ''}
-        </div>
-      `;
-      container.appendChild(nonDiv);
-    }
+      </div>
+      <div class="tasks">
+        ${sections.Night.map(task => `
+          <label class="task">
+            <span>${task}</span>
+            <input type="checkbox" data-section="Night" data-task="${task}" ${nightSecObj[task] ? 'checked' : ''}>
+          </label>
+        `).join('')}
+      </div>
+    `;
+    container.appendChild(nightDiv);
 
     attachDailyEvents();
     updateTodayProgress();
@@ -620,14 +688,8 @@
   function handleDailyCheck(e) {
     const section = e.target.dataset.section;
     const task = e.target.dataset.task;
-    const data = loadData();
     const todayKey = getDateKey(today);
-    if (!data[todayKey]) data[todayKey] = {};
-    if (!data[todayKey][section]) data[todayKey][section] = {};
-    data[todayKey][section][task] = e.target.checked;
-    saveData(data);
-    renderDailySections();
-    updateDisplayedMonth(); // refresh calendar & stats for current month view
+    setTaskCompletionForDate(todayKey, section, task, e.target.checked);
   }
 
   function updateTodayProgress() {
@@ -641,7 +703,6 @@
     document.getElementById('dateDisplay').innerHTML = today.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' });
   }
 
-  // ---------- MONTHLY STATS (top 3 most/least + life donuts) for given year/month ----------
   function computeMonthlyRankingsForMonth(year, month) {
     const data = loadData();
     const habitCount = new Map();
@@ -709,13 +770,13 @@
     const statsContainer = document.getElementById('statsContainer');
     statsContainer.innerHTML = `
       <div class="stat-card">
-        <h3>🏆 Most consistent </h3>
+        <h3>🏆 Most Consistent</h3>
         <div class="habit-list">
           ${mostCompleted.length ? mostCompleted.map(h => `<div class="habit-item"><span class="habit-name">${h}</span></div>`).join('') : '<div class="badge-empty">✨ keep building</div>'}
         </div>
       </div>
       <div class="stat-card">
-        <h3>😔 Most neglected </h3>
+        <h3>😔 Most Neglected</h3>
         <div class="habit-list">
           ${mostNeglected.filter(h => h).length ? mostNeglected.map(h => `<div class="habit-item"><span class="habit-name">${h}</span></div>`).join('') : '<div class="badge-empty">🌟 amazing consistency!</div>'}
         </div>
@@ -736,7 +797,6 @@
     `;
   }
 
-  // ---------- CALENDAR VIEW (based on currentDisplayMonth) ----------
   function renderCalendarForMonth() {
     const grid = document.getElementById('calendarGrid');
     grid.innerHTML = '';
@@ -770,12 +830,12 @@
       cell.innerHTML = `
         <div style="text-align:center;"><span class="cell-date">${day}</span></div>
         <div style="display:flex; gap:8px; justify-content:center; margin:6px 0;">
-          ${renderMiniDonut(morningPct, '🌅')}
+          ${renderMiniDonut(morningPct, '🌄')}
           ${renderMiniDonut(middayPct, '☀️')}
           ${renderMiniDonut(nightPct, '🌙')}
         </div>
         <div class="expand-detail" id="detail-${key}"></div>
-        <div class="click-hint"> Details </div>
+        <div class="click-hint"> ✎ tap to edit</div>
       `;
       cell.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -783,7 +843,7 @@
         document.querySelectorAll('.calendar-cell.active-detail').forEach(c => c.classList.remove('active-detail'));
         if (!wasActive) {
           cell.classList.add('active-detail');
-          loadDetailInside(cell, key, dayTasks);
+          loadEditableDetailInside(cell, key);
         }
       });
       grid.appendChild(cell);
@@ -795,20 +855,69 @@
     return `<div class="donut-mini" style="background: conic-gradient(#b285ff ${angle}deg, #e2eccf 0deg);"><span>${icon}</span></div>`;
   }
 
-  function loadDetailInside(cell, dateKey, dayTasks) {
+  // Discreet, tiny checkboxes version
+  function loadEditableDetailInside(cell, dateKey) {
+    const data = loadData();
+    const dayTasks = getAllTasksForDay(data, dateKey);
     const detailDiv = cell.querySelector('.expand-detail');
     if (!detailDiv) return;
-    const completedList = dayTasks.filter(t => t.completed).map(t => t.name);
-    const pendingList = dayTasks.filter(t => !t.completed).map(t => t.name);
-    detailDiv.innerHTML = `
-      <div style="font-weight:bold;">✅ Done (${completedList.length})</div>
-      <div>${completedList.length ? completedList.map(h => `<span class="habit-tag">✓ ${h}</span>`).join('') : '—'}</div>
-      <div style="font-weight:bold; margin-top:6px;">⏳ Left</div>
-      <div>${pendingList.length ? pendingList.map(h => `<span class="habit-tag">○ ${h}</span>`).join('') : '🎉 All Done!'}</div>
-    `;
+    
+    const grouped = { Morning: [], Midday: [], Night: [] };
+    dayTasks.forEach(t => {
+      grouped[t.category].push(t);
+    });
+    
+    let html = '';
+    for (let [sectionName, tasks] of Object.entries(grouped)) {
+      if (tasks.length === 0) continue;
+      html += `<div class="detail-group"><strong>${sectionName}</strong><div class="detail-tasks">`;
+      tasks.forEach(task => {
+        const checkedAttr = task.completed ? 'checked' : '';
+        // discreet tag with micro checkbox
+        html += `
+          <label class="habit-tag-discreet" data-datekey="${dateKey}" data-section="${sectionName}" data-taskname="${task.name}">
+            <input type="checkbox" ${checkedAttr}>
+            <span>${task.name}</span>
+          </label>
+        `;
+      });
+      html += `</div></div>`;
+    }
+    if (html === '') html = '<div class="badge-empty" style="padding:6px;">✨ ready for habits</div>';
+    detailDiv.innerHTML = html;
+    
+    // attach change events to these tiny checkboxes
+    const checkboxes = detailDiv.querySelectorAll('.habit-tag-discreet input');
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        e.stopPropagation();
+        const label = cb.closest('.habit-tag-discreet');
+        if (!label) return;
+        const targetDateKey = label.dataset.datekey;
+        const section = label.dataset.section;
+        const taskName = label.dataset.taskname;
+        const isChecked = cb.checked;
+        setTaskCompletionForDate(targetDateKey, section, taskName, isChecked);
+        refreshCalendarKeepingExpanded(targetDateKey);
+      });
+    });
+  }
+  
+  function refreshCalendarKeepingExpanded(editedDateKey) {
+    const wasActiveCell = document.querySelector('.calendar-cell.active-detail');
+    let activeDateKey = wasActiveCell ? wasActiveCell.getAttribute('data-daykey') : null;
+    renderCalendarForMonth();
+    if (activeDateKey) {
+      const newCell = document.querySelector(`.calendar-cell[data-daykey="${activeDateKey}"]`);
+      if (newCell) {
+        newCell.classList.add('active-detail');
+        loadEditableDetailInside(newCell, activeDateKey);
+      }
+    }
+    renderMonthlyInsights();
+    updateTodayProgress();
   }
 
-  // ----- MONTH NAVIGATION & global refresh -----
   function updateDisplayedMonth() {
     document.getElementById('overviewMonthLabel').innerText = new Date(currentDisplayYear, currentDisplayMonth, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     renderMonthlyInsights();
@@ -830,14 +939,12 @@
     updateDisplayedMonth();
   }
 
-  // initial data integrity + daily rendering
   function init() {
     let data = loadData();
     data = ensureAllExisting(data);
     saveData(data);
     renderDailySections();
     updateDisplayedMonth();
-    // set month label and today date
     document.getElementById('overviewMonthLabel').innerText = new Date(currentDisplayYear, currentDisplayMonth, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     document.getElementById('dateDisplay').innerHTML = today.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' });
   }
