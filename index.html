@@ -143,23 +143,6 @@
       color: var(--accent);
     }
 
-    .tree-area {
-      height: 100px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: #fafbe9;
-    }
-
-    .tree-img {
-      width: 55px;
-      height: 55px;
-      object-fit: contain;
-      display: inline-block;
-      transition: transform 0.2s ease;
-    }
-
     .tasks {
       padding: 16px 14px;
       display: flex;
@@ -518,10 +501,6 @@
     physical: ['Fruits & Nuts', 'Fiber', 'Exercise', 'Protein'],
     hygiene: ['Shower', 'Vitamins', 'Skincare', 'Floss & Brush']
   };
-
-  const treeStagesMorning = ['P1.png', 'P2.png', 'P3.png', 'P4.png', 'P5.png', 'P6.png'];
-  const treeStagesMidday = ['Y1.png', 'Y3.png', 'Y4.png', 'Y5.png', 'Y6.png'];
-  const treeStagesNight = ['B1.png', 'B3.png', 'B4.png', 'B5.png', 'B6.png'];
   
   const today = new Date();
   
@@ -594,21 +573,11 @@
     const todayData = data[todayKey] || {};
 
     const morningSecObj = todayData.Morning || {};
-    let morningCompleted = 0;
-    sections.Morning.forEach(t => { if (morningSecObj[t]) morningCompleted++; });
-    const morningRatio = sections.Morning.length ? morningCompleted / sections.Morning.length : 0;
-    let morningStage = Math.min(Math.floor(morningRatio * treeStagesMorning.length), treeStagesMorning.length - 1);
-    if (morningStage < 0) morningStage = 0;
     
     const morningDiv = document.createElement('div');
     morningDiv.className = 'section';
     morningDiv.innerHTML = `
       <div class="section-header"> Morning</div>
-      <div class="tree-area">
-        <div style="transform: scale(${0.9 + morningRatio * 0.2}); display: inline-block;">
-          <img src="${treeStagesMorning[morningStage]}" class="tree-img" alt="morning tree">
-        </div>
-      </div>
       <div class="tasks">
         ${sections.Morning.map(task => `
           <label class="task">
@@ -621,21 +590,11 @@
     container.appendChild(morningDiv);
 
     const middaySecObj = todayData.Midday || {};
-    let middayCompleted = 0;
-    sections.Midday.forEach(t => { if (middaySecObj[t]) middayCompleted++; });
-    const middayRatio = sections.Midday.length ? middayCompleted / sections.Midday.length : 0;
-    let middayStage = Math.min(Math.floor(middayRatio * treeStagesMidday.length), treeStagesMidday.length - 1);
-    if (middayStage < 0) middayStage = 0;
     
     const middayDiv = document.createElement('div');
     middayDiv.className = 'section';
     middayDiv.innerHTML = `
       <div class="section-header"> Midday</div>
-      <div class="tree-area">
-        <div style="transform: scale(${0.9 + middayRatio * 0.2}); display: inline-block;">
-          <img src="${treeStagesMidday[middayStage]}" class="tree-img" alt="midday tree">
-        </div>
-      </div>
       <div class="tasks">
         ${sections.Midday.map(task => `
           <label class="task">
@@ -648,21 +607,11 @@
     container.appendChild(middayDiv);
 
     const nightSecObj = todayData.Night || {};
-    let nightCompleted = 0;
-    sections.Night.forEach(t => { if (nightSecObj[t]) nightCompleted++; });
-    const nightRatio = sections.Night.length ? nightCompleted / sections.Night.length : 0;
-    let nightStage = Math.min(Math.floor(nightRatio * treeStagesNight.length), treeStagesNight.length - 1);
-    if (nightStage < 0) nightStage = 0;
     
     const nightDiv = document.createElement('div');
     nightDiv.className = 'section';
     nightDiv.innerHTML = `
       <div class="section-header"> Night</div>
-      <div class="tree-area">
-        <div style="transform: scale(${0.9 + nightRatio * 0.2}); display: inline-block;">
-          <img src="${treeStagesNight[nightStage]}" class="tree-img" alt="night tree">
-        </div>
-      </div>
       <div class="tasks">
         ${sections.Night.map(task => `
           <label class="task">
