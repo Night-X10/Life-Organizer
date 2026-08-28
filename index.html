@@ -103,6 +103,24 @@
       margin: 6px 0 8px;
     }
 
+    .overall-progress {
+      width: 100%;
+      height: 32px;
+      background: #ffffffc2;
+      border-radius: 60px;
+      overflow: hidden;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .overall-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(92deg, #a78eff, #7b5be6);
+      transition: width 0.3s ease;
+      border-radius: 60px;
+    }
+
     .sections {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -123,6 +141,23 @@
       font-size: 1.45rem;
       font-weight: 700;
       color: var(--accent);
+    }
+
+    .tree-area {
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #fafbe9;
+    }
+
+    .tree-img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      display: inline-block;
+      transition: transform 0.2s ease;
     }
 
     .tasks {
@@ -450,6 +485,8 @@
         <button class="month-nav-btn" id="nextMonthBtn">▶</button>
       </div>
       <div class="date" id="dateDisplay"></div>
+      <div class="overall-progress">
+        <div class="overall-progress-fill" id="overallProgress"></div>
       </div>
     </div>
     <div class="sections" id="sectionsContainer"></div>
@@ -481,6 +518,10 @@
     physical: ['Fruits & Nuts', 'Fiber', 'Exercise', 'Protein'],
     hygiene: ['Shower', 'Vitamins', 'Skincare', 'Floss & Brush']
   };
+
+  const treeStagesMorning = ['P1.png', 'P2.png', 'P3.png', 'P4.png', 'P5.png', 'P6.png'];
+  const treeStagesMidday = ['Y1.png', 'Y3.png', 'Y4.png', 'Y5.png', 'Y6.png'];
+  const treeStagesNight = ['B1.png', 'B3.png', 'B4.png', 'B5.png', 'B6.png'];
   
   const today = new Date();
   
