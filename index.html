@@ -12,7 +12,7 @@
     }
 
     :root {
-      --bg: #fefcf0;
+      --bg: #ffffff;
       --panel: #eaf7df;
       --panel-dark: #d4e8c2;
       --accent: #6c4fd9;
@@ -103,24 +103,6 @@
       margin: 6px 0 8px;
     }
 
-    .overall-progress {
-      width: 100%;
-      height: 32px;
-      background: #ffffffc2;
-      border-radius: 60px;
-      overflow: hidden;
-      margin-top: 12px;
-      border: 1px solid var(--border);
-    }
-
-    .overall-progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(92deg, #a78eff, #7b5be6);
-      transition: width 0.3s ease;
-      border-radius: 60px;
-    }
-
     .sections {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -144,10 +126,10 @@
     }
 
     .tasks {
-      padding: 16px 14px;
+      padding: 10px 10px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 7px;
     }
 
     .task {
@@ -156,7 +138,7 @@
       justify-content: space-between;
       gap: 12px;
       background: rgba(255, 255, 245, 0.7);
-      padding: 10px 14px;
+      padding: 7px 10px;
       border-radius: 60px;
       border: 1px solid #d0e6b6;
     }
@@ -168,8 +150,8 @@
     }
 
     input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       accent-color: var(--accent);
       cursor: pointer;
     }
@@ -467,10 +449,8 @@
         <span class="current-month-label" id="overviewMonthLabel"></span>
         <button class="month-nav-btn" id="nextMonthBtn">▶</button>
       </div>
+      
       <div class="date" id="dateDisplay"></div>
-      <div class="overall-progress">
-        <div class="overall-progress-fill" id="overallProgress"></div>
-      </div>
     </div>
     <div class="sections" id="sectionsContainer"></div>
   </div>
@@ -645,10 +625,6 @@
     const data = loadData();
     const todayKey = getDateKey(today);
     const tasks = getAllTasksForDay(data, todayKey);
-    const done = tasks.filter(t => t.completed).length;
-    const total = tasks.length;
-    const percent = total ? Math.round((done / total) * 100) : 0;
-    document.getElementById('overallProgress').style.width = `${percent}%`;
     document.getElementById('dateDisplay').innerHTML = today.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' });
   }
 
