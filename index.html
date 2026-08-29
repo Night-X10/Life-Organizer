@@ -264,17 +264,15 @@
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-      max-height: 500px;
-      overflow-y: auto;
-      padding-right: 4px;
+      gap: 6px;
+      padding-right: 0;
     }
 
     .calendar-cell {
       background: #fffff2;
-      border-radius: 20px;
-      padding: 10px 6px;
-      min-height: 120px;
+      border-radius: 12px;
+      padding: 6px 4px;
+      min-height: 85px;
       border: 1px solid #cae2b0;
       cursor: pointer;
       transition: 0.1s;
@@ -298,10 +296,10 @@
     }
 
     .donut-mini {
-      width: 44px;
-      height: 44px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      margin: 0 auto 4px;
+      margin: 0 auto 3px;
       position: relative;
       display: flex;
       align-items: center;
@@ -312,15 +310,15 @@
     .donut-mini::before {
       content: '';
       position: absolute;
-      width: 28px;
-      height: 28px;
+      width: 22px;
+      height: 22px;
       background: #ffffe8;
       border-radius: 50%;
     }
 
     .donut-mini span {
       position: relative;
-      font-size: 0.75rem;
+      font-size: 0.6rem;
       font-weight: bold;
       color: var(--accent);
     }
@@ -754,7 +752,7 @@
       cell.setAttribute('data-daykey', key);
       cell.innerHTML = `
         <div style="text-align:center;"><span class="cell-date">${day}</span></div>
-        <div style="display:flex; gap:8px; justify-content:center; margin:6px 0;">
+        <div style="display:flex; gap:3px; justify-content:center; margin:3px 0;">
           ${renderMiniDonut(morningPct, '🌄')}
           ${renderMiniDonut(middayPct, '☀️')}
           ${renderMiniDonut(nightPct, '🌙')}
